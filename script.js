@@ -126,7 +126,7 @@ function showSingleEpisode(event) {
   btn.className = "all-btn";
 
   btn.onclick = function () {
-    alert("Button is clicked");
+    makePageForEpisodes(allEpisodes);
   };
 
   navElm.appendChild(btn);
