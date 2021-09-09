@@ -11,18 +11,18 @@ body {
   margin: 0 auto;
 }
 
-#search-container {
+#nav {
   display: flex;
   width: 80%;
   margin: 4rem auto 0 auto;
   /* position: relative; */
 }
 
-#search-container label {
+#nav label {
   /* position: absolute;
   bottom: 0rem; */
 }
-#search-container input {
+#nav input {
   /* position: absolute;
   top: 1rem; */
   height: 2rem;
@@ -30,7 +30,7 @@ body {
   margin-left: 0.6rem;
 }
 
-#search-container p {
+#nav p {
   font-size: 0.75rem;
   top: 1rem;
   left: 15rem;

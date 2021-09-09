@@ -1,11 +1,11 @@
 //You can edit ALL of the code here
 
+// Global variables
 const rootElem = document.getElementById("root");
 const allEpisodes = getAllEpisodes();
+const searchContainerElm = document.getElementById("nav");
 
 function setup() {
-  // const allEpisodes = getAllEpisodes();
-
   makePageForEpisodes(allEpisodes);
   displaySearchResultCount(allEpisodes, allEpisodes);
   CreateSelectOptions();
@@ -15,6 +15,10 @@ function setup() {
   searchBox.addEventListener("keyup", filterEpisodes);
 }
 
+/* ****
+show only episodes that includes the search terms entered by the user
+in the search box
+**** */
 function filterEpisodes(event) {
   // console.log(event.target.value);
   // let searchBox = document.getElementById("site-search");
@@ -27,51 +31,24 @@ function filterEpisodes(event) {
       return false;
     }
   });
+
   // console.log(filteredEpisodes);
   displaySearchResultCount(filteredEpisodes, allEpisodes);
 
   makePageForEpisodes(filteredEpisodes);
 }
 
+/**
+ * create the layout of the page
+ */
 function makePageForEpisodes(episodeList) {
-  // const rootElem = document.getElementById("root");
-  // rootElem.textContent = `Got ${episodeList.length} episode(s)`;
   // console.log(episodeList.length);
   rootElem.innerHTML = "";
   episodeList.forEach(createCard);
 }
 
-function displaySearchResultCount(filteredEpisodes, allEpisodes) {
-  // create a search result counter
-  const searchContainerElm = document.getElementById("search-container");
-  const searchResultCount = document.getElementById("result-count");
-
-  // console.log(searchContainerElm.childNodes);
-  // console.log(searchContainerElm.removeChild[2]);
-
-  searchContainerElm.removeChild(searchContainerElm.lastElementChild);
-  searchResultCount.textContent = `Displaying ${filteredEpisodes.length} / ${allEpisodes.length} episodes`;
-  searchContainerElm.appendChild(searchResultCount);
-
-  // console.log(searchContainerElm.lastChild);
-}
-
-function CreateSelectOptions() {
-  allEpisodes.forEach(populateSelectOptions);
-}
-
-function populateSelectOptions(episode, index) {
-  const selectElm = document.getElementById("episode-select");
-  // selectElm.options.length gets the current index
-  selectElm.options[selectElm.options.length] = new Option(
-    `${formatEpisodeNaming(episode)} - ${episode.name}`,
-    episode.name
-  );
-}
-
 function createCard(episode, index, array) {
   // console.log(episode.name);
-
   // Main div which hold the content of the episode
   let card = document.createElement("div");
 
@@ -110,6 +87,25 @@ function createCard(episode, index, array) {
   rootElem.appendChild(card).appendChild(textContentDiv);
 }
 
+/**
+ * Create the options tag and populate them
+ */
+function CreateSelectOptions() {
+  allEpisodes.forEach(populateSelectOptions);
+}
+
+function populateSelectOptions(episode, index) {
+  const selectElm = document.getElementById("episode-select");
+  // selectElm.options.length gets the current index
+  selectElm.options[selectElm.options.length] = new Option(
+    `${formatEpisodeNaming(episode)} - ${episode.name}`,
+    episode.name
+  );
+}
+
+/**
+ * Format the episode code as required
+ */
 function formatEpisodeNaming(episode) {
   if (episode.number > 9) {
     // return ` - S0${episode.season}E${episode.number}`;
@@ -120,6 +116,28 @@ function formatEpisodeNaming(episode) {
   } else {
     return `S0${episode.season}E0${episode.number}`;
   }
+}
+
+function showSingleEpisode(event) {
+  filterEpisodes(event);
+  let btn = document.createElement("button");
+}
+
+/**
+ * Display the number of episodes after the search
+ */
+function displaySearchResultCount(filteredEpisodes, allEpisodes) {
+  // create a search result counter
+  const searchResultCount = document.getElementById("result-count");
+
+  // console.log(searchContainerElm.childNodes);
+  // console.log(searchContainerElm.removeChild[2]);
+
+  searchContainerElm.removeChild(searchContainerElm.lastElementChild);
+  searchResultCount.textContent = `Displaying ${filteredEpisodes.length} / ${allEpisodes.length} episodes`;
+  searchContainerElm.appendChild(searchResultCount);
+
+  // console.log(searchContainerElm.lastChild);
 }
 
 window.onload = setup;

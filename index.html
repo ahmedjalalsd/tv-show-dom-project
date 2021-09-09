@@ -11,15 +11,15 @@
 </head>
 
 <body>
-  <div id="search-container">
+  <nav id="nav">
 
-    <select name="pets" id="episode-select">
-      <option value="">-- Find an episode --</option>
+    <select name="episodes" id="episode-select" onchange="showSingleEpisode(event)">
+      <option value="Find an episode">-- Find an episode --</option>
     </select>
 
     <input type="search" id="site-search" name="q" aria-label="Search through site content" placeholder="Search">
     <span id="result-count"></span>
-  </div>
+  </nav>
 
   <div id="root"></div>
 
