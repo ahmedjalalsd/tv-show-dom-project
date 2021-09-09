@@ -3,7 +3,7 @@
 // Global variables
 const rootElem = document.getElementById("root");
 const allEpisodes = getAllEpisodes();
-const searchContainerElm = document.getElementById("nav");
+const navElm = document.getElementById("nav");
 
 function setup() {
   makePageForEpisodes(allEpisodes);
@@ -11,7 +11,7 @@ function setup() {
   CreateSelectOptions();
 
   // keyup event on of JS event listeners
-  let searchBox = document.getElementById("site-search");
+  let searchBox = document.getElementById("search-box");
   searchBox.addEventListener("keyup", filterEpisodes);
 }
 
@@ -21,7 +21,7 @@ in the search box
 **** */
 function filterEpisodes(event) {
   // console.log(event.target.value);
-  // let searchBox = document.getElementById("site-search");
+  // let searchBox = document.getElementById("search-box");
   // searchBox.value === event.target.value
 
   let filteredEpisodes = allEpisodes.filter((ele) => {
@@ -121,6 +121,15 @@ function formatEpisodeNaming(episode) {
 function showSingleEpisode(event) {
   filterEpisodes(event);
   let btn = document.createElement("button");
+  btn.innerHTML = "Show All Episodes";
+  btn.type = "button";
+  btn.className = "all-btn";
+
+  btn.onclick = function () {
+    alert("Button is clicked");
+  };
+
+  navElm.appendChild(btn);
 }
 
 /**
@@ -129,15 +138,14 @@ function showSingleEpisode(event) {
 function displaySearchResultCount(filteredEpisodes, allEpisodes) {
   // create a search result counter
   const searchResultCount = document.getElementById("result-count");
+  // console.log(navElm.childNodes);
+  // console.log(navElm.removeChild[2]);
 
-  // console.log(searchContainerElm.childNodes);
-  // console.log(searchContainerElm.removeChild[2]);
-
-  searchContainerElm.removeChild(searchContainerElm.lastElementChild);
+  navElm.removeChild(navElm.lastElementChild);
   searchResultCount.textContent = `Displaying ${filteredEpisodes.length} / ${allEpisodes.length} episodes`;
-  searchContainerElm.appendChild(searchResultCount);
+  navElm.appendChild(searchResultCount);
 
-  // console.log(searchContainerElm.lastChild);
+  // console.log(navElm.lastChild);
 }
 
 window.onload = setup;
