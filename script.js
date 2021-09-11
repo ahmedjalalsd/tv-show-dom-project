@@ -17,7 +17,7 @@ function setup() {
 
 /* ****
 show only episodes that includes the search terms entered by the user
-in the search box
+in the search box and single episode when using the drop-down menu
 **** */
 function filterEpisodes(event) {
   // console.log(event.target.value);
