@@ -4,24 +4,23 @@
 const rootElem = document.getElementById("root");
 // const allEpisodes = getAllEpisodes();
 const navElm = document.getElementById("nav");
+const endPoint = "https://api.tvmaze.com/shows/82/episodes";
 
-const allEpisodes = getAllEpisodes("https://api.tvmaze.com/shows/82/episodes");
+// const allEpisodes = getAllEpisodes("https://api.tvmaze.com/shows/82/episodes");
+let allEpisodes;
 
 // callback(https://api.tvmaze.com/shows/82/episodes, allEpisodes());
-console.log(allEpisodes);
 
 function setup() {
-  makePageForEpisodes(allEpisodes);
-  displaySearchResultCount(allEpisodes, allEpisodes);
-  CreateSelectOptions();
-
+  getAllEpisodes(endPoint);
   // keyup event on of JS event listeners
   let searchBox = document.getElementById("search-box");
   searchBox.addEventListener("keyup", filterEpisodes);
 }
 
-function getAllEpisodes(url) {
-  fetch(url)
+// retrieve the data from tvmaze
+function getAllEpisodes(endPoint) {
+  fetch(endPoint)
     .then((response) => {
       if (response.status >= 200 && response.status <= 299) {
         return response.json();
@@ -32,13 +31,24 @@ function getAllEpisodes(url) {
       }
     })
     .then((episodeList) => {
-      //   console.log(countryList);
-      return episodeList;
+      allEpisodes = episodeList;
+      makePageForEpisodes(allEpisodes);
+      displaySearchResultCount(allEpisodes, allEpisodes);
+      CreateSelectOptions();
     })
-    .catch((error) => {
+    .catch((err) => {
       // Handle the error
-      console.log(error);
+      console.log(err);
     });
+}
+
+/**
+ * create the layout of the page
+ */
+function makePageForEpisodes(episodeList) {
+  // console.log(episodeList.length);
+  rootElem.innerHTML = "";
+  episodeList.forEach(createCard);
 }
 
 /* ****
@@ -62,15 +72,6 @@ function filterEpisodes(event) {
   displaySearchResultCount(filteredEpisodes, allEpisodes);
 
   makePageForEpisodes(filteredEpisodes);
-}
-
-/**
- * create the layout of the page
- */
-function makePageForEpisodes(episodeList) {
-  // console.log(episodeList.length);
-  rootElem.innerHTML = "";
-  episodeList.forEach(createCard);
 }
 
 function createCard(episode, index, array) {
@@ -153,6 +154,7 @@ function showSingleEpisode(event) {
 
   btn.onclick = function () {
     makePageForEpisodes(allEpisodes);
+    displaySearchResultCount(allEpisodes, allEpisodes);
   };
 
   navElm.appendChild(btn);
