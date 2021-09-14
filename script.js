@@ -2,8 +2,13 @@
 
 // Global variables
 const rootElem = document.getElementById("root");
-const allEpisodes = getAllEpisodes();
+// const allEpisodes = getAllEpisodes();
 const navElm = document.getElementById("nav");
+
+const allEpisodes = getAllEpisodes("https://api.tvmaze.com/shows/82/episodes");
+
+// callback(https://api.tvmaze.com/shows/82/episodes, allEpisodes());
+console.log(allEpisodes);
 
 function setup() {
   makePageForEpisodes(allEpisodes);
@@ -13,6 +18,27 @@ function setup() {
   // keyup event on of JS event listeners
   let searchBox = document.getElementById("search-box");
   searchBox.addEventListener("keyup", filterEpisodes);
+}
+
+function getAllEpisodes(url) {
+  fetch(url)
+    .then((response) => {
+      if (response.status >= 200 && response.status <= 299) {
+        return response.json();
+      } else {
+        throw new Error(
+          `Encountered something unexpected: ${response.status} ${response.statusText}`
+        );
+      }
+    })
+    .then((episodeList) => {
+      //   console.log(countryList);
+      return episodeList;
+    })
+    .catch((error) => {
+      // Handle the error
+      console.log(error);
+    });
 }
 
 /* ****
