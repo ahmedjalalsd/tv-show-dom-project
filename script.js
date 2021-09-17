@@ -51,7 +51,7 @@ function getAllEpisodes(endPoint) {
       allEpisodes = episodeList;
       makePageForEpisodes(allEpisodes);
       displaySearchResultCount(allEpisodes, allEpisodes);
-      CreateSelectOptions();
+      createSelectOptions();
     })
     .catch((err) => {
       // Handle the error
@@ -134,7 +134,7 @@ function createCard(episode, index, array) {
 /**
  * Create the options tag and populate them
  */
-function CreateSelectOptions() {
+function createSelectOptions() {
   allEpisodes.forEach(populateSelectOptions);
 }
 
@@ -145,6 +145,29 @@ function populateSelectOptions(episode, index) {
     `${formatEpisodeNaming(episode)} - ${episode.name}`,
     episode.name
   );
+}
+
+/**
+ * Create the options tag and populate them with the all show list
+ */
+function createSelectOptionsAllShows() {
+  allShows.sort((a, b) => {
+    if (a.name.toLowerCase() > b.name.toLowerCase()) {
+      return 1;
+    } else if (a.name.toLowerCase() < b.name.toLowerCase()) {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
+  allShows.forEach(populateSelectOptionsAllShows);
+}
+
+function populateSelectOptionsAllShows(show, index) {
+  // console.log(show.name);
+  const selectElm = document.getElementById("show-select");
+
+  selectElm.options[index] = new Option(show.name, show.name);
 }
 
 /**
