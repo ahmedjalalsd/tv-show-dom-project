@@ -1,10 +1,11 @@
 //You can edit ALL of the code here
 
 // Global variables
-const rootElem = document.getElementById("root");
 // const allEpisodes = getAllEpisodes();
+const rootElem = document.getElementById("root");
 const navElm = document.getElementById("nav");
 const endPoint = "https://api.tvmaze.com/shows/82/episodes";
+// const endPoint = "https://api.tfl.gov.uk/BikePoint";
 
 // const allEpisodes = getAllEpisodes("https://api.tvmaze.com/shows/82/episodes");
 let allEpisodes;
@@ -15,7 +16,23 @@ function setup() {
   getAllEpisodes(endPoint);
   // keyup event on of JS event listeners
   let searchBox = document.getElementById("search-box");
-  searchBox.addEventListener("keyup", filterEpisodes);
+  let searchToken = 0;
+
+  searchBox.addEventListener("keyup", (event) => {
+    /* 
+    send less request to the network, because without the app will send a request as soon
+    as the user enters a Character in this way the app will send a request when the user has entered a 
+    batch of characters
+    */
+    clearTimeout(searchToken);
+    // protect against space bar inputs or any white space input
+    if (searchBox.value.trim().length === 0) {
+      console.log("no");
+    }
+    searchToken = setTimeout(() => {
+      filterEpisodes(event);
+    }, 250);
+  });
 }
 
 // retrieve the data from tvmaze

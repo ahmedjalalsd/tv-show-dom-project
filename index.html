@@ -13,8 +13,12 @@
 <body>
   <nav id="nav">
 
+    <select name="shows" id="show-select" onchange="renderAShow(event)">
+      <option value="find a show">-- Find a show --</option>
+    </select>
+
     <select name="episodes" id="episode-select" onchange="showSingleEpisode(event)">
-      <option value="Find an episode">-- Find an episode --</option>
+      <option value="find an episode">-- Find an episode --</option>
     </select>
 
     <input type="search" id="search-box" name="q" aria-label="Search through site content" placeholder="Search">
@@ -27,7 +31,7 @@
   <script src="episodes.js"></script>
 
   <!-- Loads YOUR javascript code -->
-  <script src="script.js"></script>
+  <script src="_script.js"></script>
 </body>
 
 </html>
