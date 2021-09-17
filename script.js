@@ -52,6 +52,7 @@ function getAllEpisodes(endPoint) {
       makePageForEpisodes(allEpisodes);
       displaySearchResultCount(allEpisodes, allEpisodes);
       createSelectOptions();
+      createSelectOptionsAllShows();
     })
     .catch((err) => {
       // Handle the error
@@ -195,6 +196,7 @@ function showSingleEpisode(event) {
   btn.onclick = function () {
     makePageForEpisodes(allEpisodes);
     displaySearchResultCount(allEpisodes, allEpisodes);
+    btn.style.display = "none";
   };
 
   navElm.appendChild(btn);
