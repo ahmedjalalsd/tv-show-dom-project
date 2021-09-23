@@ -32,7 +32,7 @@ function setup() {
     }
     searchToken = setTimeout(() => {
       filterEpisodes(event);
-    }, 250);
+    }, 500);
   });
 }
 
@@ -103,10 +103,9 @@ function createCard(episode, index, array) {
   // Image part
   let imgDiv = document.createElement("div");
   let imgElem = document.createElement("img");
-  if (!episode.image.original) {
-    imgElem.src = episode.image.medium;
-  } else {
-    imgElem.src = episode.image.original;
+
+  if (episode.image === null) {
+    episode.image = "/img/460x300.jpg";
   }
 
   imgElem.alt = episode.name + "image";
@@ -182,19 +181,29 @@ function populateSelectOptionsAllShows(show, index) {
   selectElm.options[index] = new Option(show.name, show.id);
 }
 
-/**
- * Format the episode code as required
- */
-function formatEpisodeNaming(episode) {
-  if (episode.number > 9) {
-    // return ` - S0${episode.season}E${episode.number}`;
-    return (
-      episode.season.toString().padStart(3, "S0") +
-      episode.number.toString().padStart(3, "E0")
-    );
-  } else {
-    return `S0${episode.season}E0${episode.number}`;
-  }
+/* display a all the episode of the show when the user uses the drop-down menu to
+choose a show
+*/
+function renderAShow(event) {
+  // console.log(event.target.value);
+  const url = `https://api.tvmaze.com/shows/${event.target.value}/episodes`;
+  fetch(url)
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error(
+          `Encountered something unexpected: ${response.status} ${response.statusText}`
+        );
+      }
+    })
+    .then((episodeList) => {
+      allEpisodes = episodeList;
+      makePageForEpisodes(allEpisodes);
+      displaySearchResultCount(allEpisodes, allEpisodes);
+      createSelectOptions(allEpisodes);
+    })
+    .catch((err) => console.log(err));
 }
 
 /* display a single episode when the user uses the drop-down menu */
@@ -214,32 +223,6 @@ function showSingleEpisode(event) {
   navElm.appendChild(btn);
 }
 
-/* display a all the episode of the show when the user uses the drop-down menu to
-choose a show
-*/
-function renderAShow(event) {
-  // console.log(event.target.value);
-  const url = `https://api.tvmaze.com/shows/${event.target.value}/episodes`;
-  fetch(url)
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error(
-          `Encountered something unexpected: ${response.status} ${response.statusText}`
-        );
-      }
-    })
-    .then((episodeList) => {
-      makePageForEpisodes(episodeList);
-      // getAllEpisodes(url);
-      displaySearchResultCount(episodeList, episodeList);
-      createSelectOptions(episodeList);
-      createSelectOptionsAllShows();
-    })
-    .catch((err) => console.log(err));
-}
-
 /**
  * Display the number of episodes after the search
  */
@@ -254,6 +237,21 @@ function displaySearchResultCount(filteredEpisodes, allEpisodes) {
   navElm.appendChild(searchResultCount);
 
   // console.log(navElm.lastChild);
+}
+
+/**
+ * Format the episode code as required
+ */
+function formatEpisodeNaming(episode) {
+  if (episode.number > 9) {
+    // return ` - S0${episode.season}E${episode.number}`;
+    return (
+      episode.season.toString().padStart(3, "S0") +
+      episode.number.toString().padStart(3, "E0")
+    );
+  } else {
+    return `S0${episode.season}E0${episode.number}`;
+  }
 }
 
 window.onload = setup;
